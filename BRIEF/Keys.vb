@@ -402,33 +402,40 @@ Public Module Keys
     End Sub
 
     ' Map to arrow left
-    Public Sub BRIEFArrowLeft()
+    Public Sub BRIEFArrowLeft(ByRef handled As Boolean)
         ResetHomeAndEnd()
-
+        handled = True
         If ColumnSelectActive Then
             DTE.ActiveDocument.Selection.Mode = vsSelectionMode.vsSelectionModeBox
             DTE.ActiveDocument.Selection.CharLeft(True, 1)
         Else
-            DTE.ActiveDocument.Selection.CharLeft(AltAActive, 1)
+            If AltAActive Then
+                DTE.ActiveDocument.Selection.CharLeft(AltAActive, 1)
+            Else
+                handled = False
+            End If
         End If
     End Sub
 
     ' Map to arrow right
-    Public Sub BRIEFArrowRight()
+    Public Sub BRIEFArrowRight(ByRef handled As Boolean)
         ResetHomeAndEnd()
-
+        handled = True
         If ColumnSelectActive Then
             DTE.ActiveDocument.Selection.Mode = vsSelectionMode.vsSelectionModeBox
             DTE.ActiveDocument.Selection.CharLeft(True, -1)
         Else
-            DTE.ActiveDocument.Selection.CharLeft(AltAActive, -1)
+            If AltAActive Then
+                DTE.ActiveDocument.Selection.CharLeft(AltAActive, -1)
+            Else
+                handled = False
+            End If
         End If
     End Sub
 
     ' Map to arrow left
     Public Sub BRIEFCtrlArrowLeft()
         ResetHomeAndEnd()
-
         If ColumnSelectActive Then
             DTE.ActiveDocument.Selection.Mode = vsSelectionMode.vsSelectionModeBox
             DTE.ActiveDocument.Selection.WordLeft(True, 1)
@@ -440,7 +447,6 @@ Public Module Keys
     ' Map to arrow right
     Public Sub BRIEFCtrlArrowRight()
         ResetHomeAndEnd()
-
         If ColumnSelectActive Then
             DTE.ActiveDocument.Selection.Mode = vsSelectionMode.vsSelectionModeBox
             DTE.ActiveDocument.Selection.WordLeft(True, -1)
@@ -452,24 +458,32 @@ Public Module Keys
 
 
     ' Map to arrow up
-    Public Sub BRIEFArrowUp()
+    Public Sub BRIEFArrowUp(ByRef handled As Boolean)
         ResetHomeAndEnd()
-
+        handled = True
         If ColumnSelectActive Then
             DTE.ActiveDocument.Selection.Mode = vsSelectionMode.vsSelectionModeBox
         End If
-        DTE.ActiveDocument.Selection.LineDown(ColumnSelectActive Or LineSelectActive Or AltAActive, -1)
+        If ColumnSelectActive Or LineSelectActive Or AltAActive Then
+            DTE.ActiveDocument.Selection.LineDown(ColumnSelectActive Or LineSelectActive Or AltAActive, -1)
+        Else
+            handled = False
+        End If
 
     End Sub
 
     ' Map to arrow down
-    Public Sub BRIEFArrowDown()
+    Public Sub BRIEFArrowDown(ByRef handled As Boolean)
         ResetHomeAndEnd()
-
+        handled = True
         If ColumnSelectActive Then
             DTE.ActiveDocument.Selection.Mode = vsSelectionMode.vsSelectionModeBox
         End If
-        DTE.ActiveDocument.Selection.LineDown(ColumnSelectActive Or LineSelectActive Or AltAActive, 1)
+        If ColumnSelectActive Or LineSelectActive Or AltAActive Then
+            DTE.ActiveDocument.Selection.LineDown(ColumnSelectActive Or LineSelectActive Or AltAActive, 1)
+        Else
+            handled = False
+        End If
     End Sub
 
     '' Map to page up
